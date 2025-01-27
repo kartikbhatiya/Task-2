@@ -44,9 +44,19 @@ function validateField($value, $key) {
             return validateAge($value);
         case 'birthday':
             return validateBirthday($value);
+        case 'country':
+            return validateCountry($value);
         default:
             return NULL;
     }
+}
+
+function validateCountry($value) {
+    if(empty($value)){
+        return "Country is required.";
+    }
+    return NULL;
+
 }
 
 

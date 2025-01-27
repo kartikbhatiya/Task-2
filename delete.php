@@ -1,14 +1,15 @@
-<?php 
+<?php
 
-    include './Controller/User.php';
+if (!isset($_SESSION['adminId'])) {
+    header('Location: pages/login.php');
+}
 
-    $id = $_GET['id'] ?? NULL;
-    if($id == NULL){
-        echo "ID is required!";
-        return;
-    }
-    else{
-        echo deleteUser($id);
-    }
+include './controller/customers.php';
 
-?>
+$id = $_GET['id'] ?? NULL;
+if ($id == NULL) {
+    echo "ID is required!";
+    return;
+} else {
+    echo deleteCustomer($id);
+}
