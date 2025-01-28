@@ -8,7 +8,11 @@ function updateStatus(userId, isDeleted) {
       // Handle the response from the server
       console.log(xhr.responseText);
       var response = JSON.parse(xhr.responseText);
-      return response;
+      if (response.success) {
+        alert('Status updated successfully');
+      } else {
+        alert('Failed to update status: ' + response.message);
+      }
     }
   };
 
@@ -21,13 +25,23 @@ function updateStatus(userId, isDeleted) {
   );
 }
 
-
 function deleteUser(userId, status) {
-   console.log(userId, status);
-  if (status && confirm("Are You Sure You Want To Delete This User?")) {
-    res = updateStatus(userId, status);
-  }
-  if (!status && confirm("Are You Sure You Want To Restore This User?")) {
-    res = updateStatus(userId, status);
+  let check = document.getElementById("status-" + userId);
+  console.log("Delete User: " + userId);
+  console.log(check.checked);
+  if (status) {
+    if (confirm("Are You Sure You Want To Delete This User?")) {
+      updateStatus(userId, status);
+    } else {
+      console.log("User Delete Cancelled");
+      check.checked = false;
+    }
+  } else {
+    if (confirm("Are You Sure You Want To Restore This User?")) {
+      updateStatus(userId, status);
+    } else {
+      console.log("User Restore Cancelled");
+      check.checked = true;
+    }
   }
 }

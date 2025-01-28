@@ -6,7 +6,7 @@ function insertImages($id, $images){
     global $pdo;
     $errors = [];
    
-    $sql = "INSERT INTO images (customer_id, image_path) VALUES (:customer_id, :image)";
+    $sql = "INSERT INTO images (customer_id, image_path) VALUES (:customer_id, :image_path)";
     $stmt = $pdo->prepare($sql);
     try {
         foreach($images as $path){
@@ -31,10 +31,30 @@ function insertImages($id, $images){
 
 function fetchImages($id){
     global $pdo;
+    $sql = "SELECT * FROM images WHERE customer_id = :id AND isdeleted = false";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id' => $id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC) ?? [];
+}
+
+function fetchAllImages($id){
+    global $pdo;
     $sql = "SELECT * FROM images WHERE customer_id = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id' => $id]);
-    return $stmt->fetchAll() ?? [];
+    return $stmt->fetchAll(PDO::FETCH_ASSOC) ?? [];
 }
+
+function deleteImage($id){
+    global $pdo;
+    $sql = "UPDATE images SET isdeleted=true WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $result = $stmt->execute(['id' => $id]);
+    if ($result !== false) {
+        return ['status' => true, 'message' => "Image successfully deleted"];
+    } else {
+        return ['status' => false, 'message' => "Failed to delete image"];
+    }
+} 
 
 ?>

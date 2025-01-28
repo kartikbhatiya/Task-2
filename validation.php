@@ -56,7 +56,6 @@ function validateCountry($value) {
         return "Country is required.";
     }
     return NULL;
-
 }
 
 

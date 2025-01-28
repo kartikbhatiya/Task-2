@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     global $customer;
     if (isset($_GET['id'])) {
         $customer = fetchCustomer($_GET['id']);
-        $images  = fetchImages($customer['id']);
+        $images  = fetchAllImages($customer['id']);
     }
     else{
         $customer = null;
@@ -22,6 +22,29 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Information</title>
+    <style>
+
+        img {
+            width: 200px;
+            height: 200px;
+        }
+
+        .deleted {
+            position: relative;
+            opacity: 0.5;
+        }
+        .deleted::after {
+            content: "Deleted";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -46,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         <h2>Images</h2>
         <?php if (!empty($images)): ?>
             <?php foreach ($images as $image): ?>
-                <img src="<?php echo 'uploads/' . htmlspecialchars($image['image_path']); ?>" alt="Customer Image" style="max-width: 200px;">
+                <img src="<?php echo htmlspecialchars($image['image_path']); ?>" alt="Customer Image" class="<?php echo $image['isdeleted'] ? 'deleted' : ''; ?>">
             <?php endforeach; ?>
         <?php else: ?>
             <p>No images available.</p>

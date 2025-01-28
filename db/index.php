@@ -57,6 +57,7 @@ try {
         id SERIAL PRIMARY KEY,
         customer_id INT NOT NULL,
         image_path VARCHAR(255) NOT NULL,
+        isdeleted BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
