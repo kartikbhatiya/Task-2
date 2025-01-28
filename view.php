@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         <p><strong>Gender:</strong> <?php echo htmlspecialchars($customer['gender']); ?></p>
         <p><strong>Subscribe:</strong> <?php echo htmlspecialchars(implode(', ', $customer['subscribe'])); ?></p>
         <p><strong>Country:</strong> <?php echo htmlspecialchars($customer['country']); ?></p>
-        <p><strong>Message:</strong> <?php echo htmlspecialchars($customer['message']); ?></p>
+        <p><strong>Message:</strong> <?php echo htmlspecialchars_decode($customer['message']); ?></p>
         <p><strong>Is Deleted:</strong> <?php if ($customer['isdeleted']) {
                                             echo "Yes";
                                         } else {

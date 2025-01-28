@@ -51,7 +51,7 @@ function fetchCustomers()
 function searchCustomers($searchTerm)
 {
     global $pdo;
-    $sql = "SELECT * FROM customers WHERE id::text LIKE :search OR name LIKE :search OR email LIKE :search ORDER BY id ASC";
+    $sql = "SELECT * FROM customers WHERE name LIKE :search OR email LIKE :search ORDER BY id ASC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['search' => '%' . $searchTerm . '%']);
     return $stmt->fetchAll() ?? [];

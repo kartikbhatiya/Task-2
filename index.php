@@ -80,7 +80,7 @@ $customers = searchCustomers($searchTerm);
     </div>
     <h2> Customers </h2>
     <form method="get" action="./index.php">
-        <input type="text" name="search" placeholder="Search by ID, Name, or Email" value="<?php echo htmlspecialchars($searchTerm); ?>">
+        <input type="text" name="search" placeholder="Search by Name or Email" value="<?php echo htmlspecialchars($searchTerm); ?>">
         <input type="submit" value="Search">
     </form>
     <table border="1">
@@ -114,8 +114,7 @@ $customers = searchCustomers($searchTerm);
                     <td><?php echo htmlspecialchars($customer['gender']); ?></td>
                     <td><?php echo htmlspecialchars($customer['subscribe']); ?></td>
                     <td><?php echo htmlspecialchars($customer['country']); ?></td>
-                    <td><?php echo htmlspecialchars($customer['message']); ?></td>
-                    <!-- <td><img src="<?php echo 'uploads/' . htmlspecialchars(basename($customer['profile_picture'])); ?>" alt="Profile Picture"></td> -->
+                    <td><?php echo htmlspecialchars_decode($customer['message']); ?></td>
                     <td><?php echo htmlspecialchars($customer['created_at']); ?></td>
                     <td><?php echo htmlspecialchars($customer['updated_at']); ?></td>
                     <td>
