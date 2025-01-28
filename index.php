@@ -9,6 +9,9 @@ if (!isset($_SESSION['adminId'])) {
 include 'validation.php';
 include './controller/customers.php';
 
+$searchTerm = $_GET['search'] ?? '';
+$customers = searchCustomers($searchTerm);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,6 +79,10 @@ include './controller/customers.php';
 
     </div>
     <h2> Customers </h2>
+    <form method="get" action="./index.php">
+        <input type="text" name="search" placeholder="Search by ID, Name, or Email" value="<?php echo htmlspecialchars($searchTerm); ?>">
+        <input type="submit" value="Search">
+    </form>
     <table border="1">
         <thead>
             <tr>
@@ -96,7 +103,6 @@ include './controller/customers.php';
         </thead>
         <tbody>
             <?php
-            $customers = fetchCustomers();
             foreach ($customers as $customer):
             ?>
                 <tr>

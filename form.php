@@ -33,7 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image_id'])) {
     $upload_dir  = './uploads/';
     $uploadedImages = [];
     $images = $_FILES['profile_picture'];
-    if (isset($images) && isset($images["full_path"])) {
+    if (!empty($images['name'][0])) {
+        print_r($images);
         foreach ($images["full_path"] as $key => $image) {
             $sanitizedImage = preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $image);
             $upload_file = $upload_dir . basename($sanitizedImage);
@@ -56,7 +57,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image_id'])) {
 
     if (empty($errors)) {
         $data['subscribe'] = json_encode($data['subscribe'] ?? []);
+
+        // if $id Not Exists means it is New User 
         if ($id == NULL) {
+            echo "Inserting new customer";
             $customer = insertCustomer($data);
 
             if (!$customer['status']) {
@@ -81,26 +85,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image_id'])) {
             $message = $customer['message'];
         } else {
             $newUser = fetchCustomer($id);
+            global $message;
             if (!isset($newUser)) {
                 $message = "Customer not found";
             } else {
                 $data = getDifferences($data, $newUser);
-                if (empty($data) && empty($uploadedImages)) {
-                    $message = "No changes detected";
-                } else {
-                    if (!empty($data)) {
-                        $message = editCustomer($data, $id);
-                    }
-                    if (!empty($uploadedImages)) {
-                        $images = insertImages($id, $uploadedImages);
-                        if (!$images['status']) {
-                            $imagesError = $images['message'];
-                        }
-                    }
+                if (!empty($data)) {
+                    $message = editCustomer($data, $id);
+                }
+                if (!empty($uploadedImages)) {
+                    $images = insertImages($id, $uploadedImages);
+                    !$images['status'] ? $imagesError = $images['message'] : $imagesError = NULL;
                 }
             }
         }
     } else {
+        echo "Errors found";
+        print_r($errors);
         $uploadedImages = $id ? fetchImages($id) : $uploadedImages;
     }
 }
@@ -311,7 +312,8 @@ function getDifferences($data, $USER)
                 <span class="error"><?php echo $errors['country']; ?></span><br>
             <?php endif; ?>
 
-            Message: <textarea name="message">  <?php echo htmlspecialchars($USER['message']); ?>  </textarea><br>
+            Message: <textarea name="message">  <?php if(isset($USER['message'])) echo htmlspecialchars($USER['message']); ?>  </textarea><br>
+
 
             <?php if (isset($errors['message'])): ?>
                 <span class="error"><?php echo $errors['message']; ?></span><br>
@@ -321,21 +323,24 @@ function getDifferences($data, $USER)
             <?php
             $uploadedImages = $uploadedImages ?? [];
             echo "<div style='display: inline-block; gap: 10px;'>";
+
             if (count($uploadedImages) == 0) {
                 echo "<span> No images uploaded </span>";
-            } else {
-                foreach ($uploadedImages as $image) {
-                    echo "<div style='display: inline-block; margin: 10px;'>";
-                    echo "<img src='" . htmlspecialchars($image['image_path'] ?? '') . "' alt='Profile Picture'><br>";
-                    echo "<button type='submit' name='delete_image_id' value='" . htmlspecialchars($image['id'] ?? NULL) . "'>Delete</button>";
-                    echo "</div>";
-                }
+            } 
+            else {
+                foreach ($uploadedImages as $image){?>
+                    <div style='display: inline-block; margin: 10px;'>
+                    <img src='<?php echo $image['image_path']; ?>' alt='Profile Picture'><br>
+                    <button type='submit' name='delete_image_id' value='<?php echo $image['id']; ?>'>Delete</button>
+                    </div>
+                <?php }
             }
+
             echo "</div>";
             ?>
 
-            <?php if (isset($errors['profile_picture'])): ?>
-                <span class="error"><?php echo $imagesError; ?></span><br>
+            <?php if (isset($imagesError)): ?>
+                <span class="error"><?php echo $imagesError ?? ''; ?></span><br>
             <?php endif; ?>
 
             <br>

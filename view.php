@@ -8,8 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
         $customer = fetchCustomer($_GET['id']);
         $images  = fetchAllImages($customer['id']);
-    }
-    else{
+    } else {
         $customer = null;
     }
 }
@@ -23,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Information</title>
     <style>
-
         img {
             width: 200px;
             height: 200px;
@@ -33,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             position: relative;
             opacity: 0.5;
         }
+
         .deleted::after {
             content: "Deleted";
             position: absolute;
@@ -48,6 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 </head>
 
 <body>
+
+    <div>
+        <a href="./index.php">Back to index</a>
+    </div>
+
     <?php if (isset($customer)): ?>
         <h1>Customer Information</h1>
         <p><strong>Name:</strong> <?php echo htmlspecialchars($customer['name']); ?></p>

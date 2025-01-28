@@ -42,9 +42,18 @@ function insertCustomer($data)
 function fetchCustomers()
 {
     global $pdo;
-    $sql = "SELECT * FROM customers";
+    $sql = "SELECT * FROM customers ORDER BY id ASC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
+    return $stmt->fetchAll() ?? [];
+}
+
+function searchCustomers($searchTerm)
+{
+    global $pdo;
+    $sql = "SELECT * FROM customers WHERE id::text LIKE :search OR name LIKE :search OR email LIKE :search ORDER BY id ASC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['search' => '%' . $searchTerm . '%']);
     return $stmt->fetchAll() ?? [];
 }
 
