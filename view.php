@@ -25,11 +25,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         img {
             width: 200px;
             height: 200px;
+            border: 2px solid blue;
         }
 
         .deleted {
             position: relative;
             opacity: 0.5;
+            border: 2px solid red;
         }
 
         .deleted::after {
