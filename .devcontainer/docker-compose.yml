@@ -12,17 +12,17 @@ services:
     environment:
       - DB_HOST=db
       - DB_PORT=5432
-      - DB_NAME=your_db_name
-      - DB_USER=your_user
-      - DB_PASS=your_password
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASS=postgres
 
   db:
     image: postgres:14
     restart: always
     environment:
-      POSTGRES_DB: your_db_name
-      POSTGRES_USER: your_user
-      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
 
