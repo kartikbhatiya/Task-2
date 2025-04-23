@@ -1,0 +1,14 @@
+{
+    "name": "PHP + PostgreSQL",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "php",
+    "workspaceFolder": "/workspace",
+    "forwardPorts": [80],
+    "postCreateCommand": "composer install",
+    "customizations": {
+      "vscode": {
+        "extensions": ["felixfbecker.php-debug"]
+      }
+    }
+  }
+  
