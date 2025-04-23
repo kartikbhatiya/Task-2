@@ -2,7 +2,7 @@
     "name": "PHP + PostgreSQL",
     "dockerComposeFile": "docker-compose.yml",
     "service": "php",
-    "workspaceFolder": "/workspace",
+    "workspaceFolder": "/workspaces/Task-2",
     "forwardPorts": [80],
     "postCreateCommand": "composer install",
     "customizations": {
